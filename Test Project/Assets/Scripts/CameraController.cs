@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour
 	
 	
 	public float jumpHeight = 1000;
+	public float jumpTolerance = 2.5f;
     public Rigidbody rb;
 	
 	
@@ -79,14 +80,20 @@ public class CameraController : MonoBehaviour
 			Vector3 oldvect = transform.localEulerAngles;
 			transform.localEulerAngles = new Vector3 (0, rotationX, 0);
 			transform.Translate(0, 0, -moveSpeed);
-		//transform.localEulerAngles = oldvect;
+		//transform.localEulerAngles = oldvect;sssssssssss
 		}
 		
 		//Jumping
 		if (Input.GetKeyDown("space"))
 		{
-			//transform.Translate(0, 0, -moveSpeed);
-			rb.AddForce(0f, jumpHeight, 0f);
+		// Bit shift the index of the layer (8) to get a bit mask
+			int layerMask = 1 << 8;
+			if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down), jumpTolerance, layerMask))
+			{
+				//transform.Translate(0, 0, -moveSpeed);
+				rb.AddForce(0f, jumpHeight, 0f);
+			}
+			
 		}
 		
 		//Lunge
